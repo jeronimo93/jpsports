@@ -7,7 +7,9 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "build": "expo export --platform web"
+    "build": "expo export --platform web",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@expo/metro-runtime": "~6.1.2",
@@ -16,11 +18,17 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-native": "0.81.5",
+    "react-native-svg": "15.12.1",
     "react-native-web": "^0.21.2"
   },
   "devDependencies": {
+    "@storybook/addon-essentials": "^8.4",
+    "@storybook/react-vite": "^8.4",
     "@types/react": "~19.1.0",
-    "typescript": "~5.9.2"
+    "@vitejs/plugin-react": "^4.3",
+    "storybook": "^8.4",
+    "typescript": "~5.9.2",
+    "vite": "^5.4"
   },
   "private": true
 }
