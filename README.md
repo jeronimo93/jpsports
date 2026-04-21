@@ -5,6 +5,7 @@
 [![latest backend](https://img.shields.io/github/v/tag/jeronimo93/jpsports?filter=backend-v*&label=backend&color=blue)](https://github.com/jeronimo93/jpsports/tags)
 
 [![frontend CI](https://github.com/jeronimo93/jpsports/actions/workflows/frontend.yml/badge.svg)](https://github.com/jeronimo93/jpsports/actions/workflows/frontend.yml)
+[![frontend live](https://img.shields.io/website?url=https%3A%2F%2Fjpsports-frontend-x2tq7.ondigitalocean.app%2Fhealthz&label=frontend%20live)](https://jpsports-frontend-x2tq7.ondigitalocean.app)
 [![Expo 54](https://img.shields.io/badge/Expo-54-000020?logo=expo&logoColor=white)](https://expo.dev/)
 [![React Native Web](https://img.shields.io/badge/React_Native_Web-0.21-61DAFB?logo=react&logoColor=black)](https://necolas.github.io/react-native-web/)
 [![latest frontend](https://img.shields.io/github/v/tag/jeronimo93/jpsports?filter=frontend-v*&label=frontend&color=orange)](https://github.com/jeronimo93/jpsports/tags)
@@ -62,6 +63,9 @@ docker pull registry.digitalocean.com/princeyscr/frontend:latest
 ```
 
 ### Hosting (DigitalOcean App Platform)
+
+- **Live**: https://jpsports-frontend-x2tq7.ondigitalocean.app
+- **App ID**: `a47de75e-0f76-4107-b313-d5bf5a624c62`
 
 The app spec lives at `.do/frontend.app.yaml`. App Platform watches DOCR and auto-redeploys when `:latest` changes, so a push to `main` touching `frontend/**` takes the site live via DOCR → App Platform.
 
