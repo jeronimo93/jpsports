@@ -62,29 +62,38 @@ doctl registry login
 docker pull registry.digitalocean.com/princeyscr/frontend:latest
 ```
 
-### Hosting (DigitalOcean App Platform)
+## Hosting (DigitalOcean App Platform)
 
 - **Live**: https://jpsports-frontend-x2tq7.ondigitalocean.app
 - **App ID**: `a47de75e-0f76-4107-b313-d5bf5a624c62`
 
-The app spec lives at `.do/frontend.app.yaml`. App Platform watches DOCR and auto-redeploys when `:latest` changes, so a push to `main` touching `frontend/**` takes the site live via DOCR → App Platform.
+One App Platform app, two services:
 
-One-time provisioning (costs ~$5/month for the `basic-xxs` container; egress included up to 1 TB):
+| Service | Public | Image | Role |
+|---|---|---|---|
+| `web` | Yes, served at `/` | `registry.digitalocean.com/princeyscr/frontend` | nginx + SPA; reverse-proxies `/api/*` to the `api` service |
+| `api` | **No** — internal only | `registry.digitalocean.com/princeyscr/backend` | .NET backend, reached via service DNS `http://api:8080` |
+
+The spec lives at `.do/app.yaml`. `deploy_on_push` on each service means a DOCR push for either image triggers a per-service rolling update — frontend and backend deploy independently at runtime even though they share an app.
+
+Browsers reach the backend only through the frontend's nginx proxy, so the backend is not on the public internet.
+
+### One-time provisioning (~$10/month — two `basic-xxs` containers)
 
 ```sh
-doctl apps create --spec .do/frontend.app.yaml
+doctl apps create --spec .do/app.yaml
 doctl apps list   # note the Default Ingress URL
 ```
 
-To update the spec after changes:
+Existing app? Apply spec changes in place:
 
 ```sh
-doctl apps update <app-id> --spec .do/frontend.app.yaml
+doctl apps update <app-id> --spec .do/app.yaml
 ```
 
-#### Rollback
+### Rollback
 
-App Platform records the **image digest** of every deployment, not just the `:latest` tag, so `doctl apps create-deployment <app-id> --wait` after setting `image.tag` to a specific `sha-<short>` in the spec gives a deterministic rollback. Alternatively use the Deployments tab in the DO dashboard to redeploy a prior revision by digest.
+App Platform records the **image digest** of every deployment per service. Roll back by setting `image.tag` to a specific `sha-<short>` in the spec and `doctl apps update`, or use the Deployments tab in the DO dashboard.
 
 ## License
 
