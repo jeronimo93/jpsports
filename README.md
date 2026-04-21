@@ -61,6 +61,27 @@ doctl registry login
 docker pull registry.digitalocean.com/princeyscr/frontend:latest
 ```
 
+### Hosting (DigitalOcean App Platform)
+
+The app spec lives at `.do/frontend.app.yaml`. App Platform watches DOCR and auto-redeploys when `:latest` changes, so a push to `main` touching `frontend/**` takes the site live via DOCR → App Platform.
+
+One-time provisioning (costs ~$5/month for the `basic-xxs` container; egress included up to 1 TB):
+
+```sh
+doctl apps create --spec .do/frontend.app.yaml
+doctl apps list   # note the Default Ingress URL
+```
+
+To update the spec after changes:
+
+```sh
+doctl apps update <app-id> --spec .do/frontend.app.yaml
+```
+
+#### Rollback
+
+App Platform records the **image digest** of every deployment, not just the `:latest` tag, so `doctl apps create-deployment <app-id> --wait` after setting `image.tag` to a specific `sha-<short>` in the spec gives a deterministic rollback. Alternatively use the Deployments tab in the DO dashboard to redeploy a prior revision by digest.
+
 ## License
 
 Wide open — like a fast break.
