@@ -1,0 +1,28 @@
+name: do-spec
+
+on:
+  pull_request:
+    paths: ['.do/**']
+  push:
+    branches: [main]
+    paths: ['.do/**']
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      - name: Validate app specs
+        run: |
+          shopt -s nullglob
+          specs=(.do/*.yaml .do/*.yml)
+          if [ ${#specs[@]} -eq 0 ]; then
+            echo "No specs found under .do/"; exit 0
+          fi
+          for f in "${specs[@]}"; do
+            echo "Validating $f"
+            doctl apps spec validate "$f" >/dev/null
+          done
