@@ -78,6 +78,10 @@ To update the spec after changes:
 doctl apps update <app-id> --spec .do/frontend.app.yaml
 ```
 
+#### Rollback
+
+App Platform records the **image digest** of every deployment, not just the `:latest` tag, so `doctl apps create-deployment <app-id> --wait` after setting `image.tag` to a specific `sha-<short>` in the spec gives a deterministic rollback. Alternatively use the Deployments tab in the DO dashboard to redeploy a prior revision by digest.
+
 ## License
 
 Wide open — like a fast break.
