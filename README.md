@@ -61,6 +61,23 @@ doctl registry login
 docker pull registry.digitalocean.com/princeyscr/frontend:latest
 ```
 
+### Hosting (DigitalOcean App Platform)
+
+The app spec lives at `.do/frontend.app.yaml`. App Platform watches DOCR and auto-redeploys when `:latest` changes, so a push to `main` touching `frontend/**` takes the site live via DOCR → App Platform.
+
+One-time provisioning:
+
+```sh
+doctl apps create --spec .do/frontend.app.yaml
+doctl apps list   # note the Default Ingress URL
+```
+
+To update the spec after changes:
+
+```sh
+doctl apps update <app-id> --spec .do/frontend.app.yaml
+```
+
 ## License
 
 Wide open — like a fast break.
