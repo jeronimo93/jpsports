@@ -9,7 +9,7 @@ on:
     paths:
       - 'backend/**'
       - '.github/workflows/backend.yml'
-    tags: ['backend-v*']
+    tags: ['backend-v[0-9]*']
   workflow_dispatch:
 
 env:
