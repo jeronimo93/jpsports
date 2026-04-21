@@ -65,7 +65,7 @@ docker pull registry.digitalocean.com/princeyscr/frontend:latest
 
 The app spec lives at `.do/frontend.app.yaml`. App Platform watches DOCR and auto-redeploys when `:latest` changes, so a push to `main` touching `frontend/**` takes the site live via DOCR → App Platform.
 
-One-time provisioning:
+One-time provisioning (costs ~$5/month for the `basic-xxs` container; egress included up to 1 TB):
 
 ```sh
 doctl apps create --spec .do/frontend.app.yaml
