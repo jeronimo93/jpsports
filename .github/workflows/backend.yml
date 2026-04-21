@@ -39,9 +39,11 @@ jobs:
           fi
 
       - name: Build and push
+        env:
+          TAGS: ${{ steps.tags.outputs.tags }}
         run: |
-          IFS=',' read -ra TAGS <<< "${{ steps.tags.outputs.tags }}"
+          IFS=',' read -ra T <<< "$TAGS"
           ARGS=()
-          for t in "${TAGS[@]}"; do ARGS+=(-t "$t"); done
+          for t in "${T[@]}"; do ARGS+=(-t "$t"); done
           docker build "${ARGS[@]}" -f backend/Dockerfile backend
-          for t in "${TAGS[@]}"; do docker push "$t"; done
+          for t in "${T[@]}"; do docker push "$t"; done
