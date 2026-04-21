@@ -1,6 +1,9 @@
 name: backend
 
 on:
+  # NOTE: `paths` applies to tag events too. The release flow must bump
+  # <Version> in backend/Backend.csproj so the tagged commit touches
+  # backend/** — otherwise the tag push is silently filtered out.
   push:
     branches: [main]
     paths:
