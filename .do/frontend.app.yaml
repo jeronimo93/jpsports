@@ -14,4 +14,4 @@ services:
     routes:
       - path: /
     health_check:
-      http_path: /
+      http_path: /healthz
