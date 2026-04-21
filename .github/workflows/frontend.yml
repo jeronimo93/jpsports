@@ -1,0 +1,49 @@
+name: frontend
+
+on:
+  # NOTE: `paths` applies to tag events too. The release flow must bump
+  # the version in frontend/package.json so the tagged commit touches
+  # frontend/** — otherwise the tag push is silently filtered out.
+  push:
+    branches: [main]
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/frontend.yml'
+    tags: ['frontend-v[0-9]*']
+  workflow_dispatch:
+
+env:
+  IMAGE: registry.digitalocean.com/princeyscr/frontend
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Log in to DOCR
+        run: doctl registry login --expiry-seconds 1200
+
+      - name: Compute tags
+        id: tags
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/frontend-v* ]]; then
+            V="${GITHUB_REF#refs/tags/frontend-v}"
+            echo "tags=$IMAGE:$V,$IMAGE:latest" >>"$GITHUB_OUTPUT"
+          else
+            echo "tags=$IMAGE:latest,$IMAGE:sha-${GITHUB_SHA::7}" >>"$GITHUB_OUTPUT"
+          fi
+
+      - name: Build and push
+        env:
+          TAGS: ${{ steps.tags.outputs.tags }}
+        run: |
+          IFS=',' read -ra T <<< "$TAGS"
+          ARGS=()
+          for t in "${T[@]}"; do ARGS+=(-t "$t"); done
+          docker build "${ARGS[@]}" -f frontend/Dockerfile frontend
+          for t in "${T[@]}"; do docker push "$t"; done
