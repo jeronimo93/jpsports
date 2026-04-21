@@ -44,7 +44,7 @@ yarn build         # static export to frontend/dist/
 ```sh
 cd frontend
 docker build -t jpsports-web .
-docker run --rm -p 8080:80 jpsports-web
+docker run --rm -p 8080:8080 jpsports-web
 # open http://localhost:8080
 ```
 
