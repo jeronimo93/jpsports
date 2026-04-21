@@ -1,0 +1,33 @@
+name: jpsports-frontend
+region: ams
+services:
+  - name: web
+    image:
+      registry_type: DOCR
+      repository: frontend
+      tag: latest
+      deploy_on_push:
+        enabled: true
+    http_port: 8080
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    routes:
+      - path: /
+    health_check:
+      http_path: /healthz
+
+  # Internal-only: `internal_ports` (not `http_port`) means the API
+  # isn't reachable from the internet. The `web` service proxies
+  # /api/* to http://api:8080/ via App Platform's private service DNS.
+  - name: api
+    image:
+      registry_type: DOCR
+      repository: backend
+      tag: latest
+      deploy_on_push:
+        enabled: true
+    internal_ports: [8080]
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    health_check:
+      http_path: /health
