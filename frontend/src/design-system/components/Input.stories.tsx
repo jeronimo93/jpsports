@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import { expect, fn, userEvent, within } from '@storybook/test';
 import { View } from 'react-native';
 import { Input } from './Input';
 import { Button } from './Button';
@@ -13,11 +14,18 @@ export default meta;
 type Story = StoryObj<typeof Input>;
 
 export const Default: Story = {
-  render: () => (
+  args: { placeholder: 'Search players, teams, clips…', onChangeText: fn() },
+  render: (args) => (
     <View style={{ width: 320 }}>
-      <Input placeholder="Search players, teams, clips…" />
+      <Input {...args} />
     </View>
   ),
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    const input = canvas.getByPlaceholderText('Search players, teams, clips…');
+    await userEvent.type(input, 'Tatum');
+    await expect(args.onChangeText).toHaveBeenCalled();
+  },
 };
 
 export const Focused: Story = {
