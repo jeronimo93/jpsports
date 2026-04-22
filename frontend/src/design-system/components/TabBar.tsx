@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, StyleSheet, Text, View, type ViewStyle } from 'react-native';
+import { Platform, Pressable, StyleSheet, Text, View, type ViewStyle } from 'react-native';
 import Svg, { Circle, Path, Rect, G } from 'react-native-svg';
 import { colors, fonts, tracking } from '../tokens';
 
@@ -114,6 +114,14 @@ function TabIcon({ id, color }: { id: TabId; color: string }) {
   }
 }
 
+// backdrop-filter is web-only; on native we fall back to the flat
+// translucent background. Wrapped in Platform.select so the native
+// build doesn't ship invalid style keys.
+const webBackdrop = Platform.select({
+  web: { backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' },
+  default: null,
+}) as ViewStyle | null;
+
 const styles = StyleSheet.create({
   nav: {
     flexDirection: 'row',
@@ -124,11 +132,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 28,
     paddingHorizontal: 4,
-    // Web backdrop blur — RN-Web emits CSS; no-op on native for now.
-    // @ts-expect-error web-only style
-    backdropFilter: 'blur(20px)',
-    // @ts-expect-error web-only style
-    WebkitBackdropFilter: 'blur(20px)',
+    ...(webBackdrop ?? {}),
   },
   tab: {
     flexDirection: 'column',
