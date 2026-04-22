@@ -18,10 +18,14 @@ export type ScoreboardProps = {
 export function Scoreboard({
   home, away, homeScore, awayScore, state, metaLeft, metaRight, style,
 }: ScoreboardProps) {
-  const homeLeading =
-    typeof homeScore === 'number' && typeof awayScore === 'number' ? homeScore >= awayScore : true;
-  const awayMuted = state !== 'upcoming' && !homeLeading === false && homeLeading;
-  const homeMuted = state !== 'upcoming' && !homeLeading;
+  // Only numeric scores can establish a leader; string/undefined scores
+  // (upcoming games, placeholder dashes) render both rows fully lit.
+  const hasNumericScores = typeof homeScore === 'number' && typeof awayScore === 'number';
+  const homeLeading = hasNumericScores ? homeScore >= awayScore : true;
+
+  const canMute = state !== 'upcoming' && hasNumericScores && homeScore !== awayScore;
+  const homeMuted = canMute && !homeLeading;
+  const awayMuted = canMute && homeLeading;
 
   const isLive = state === 'live';
 
@@ -36,7 +40,7 @@ export function Scoreboard({
       <Row team={home} score={homeScore} muted={homeMuted} />
       <Row team={away} score={awayScore} muted={awayMuted} />
       {(metaLeft || metaRight) && (
-        <View style={[styles.meta, isLive && { }]}>
+        <View style={styles.meta}>
           <Text style={[styles.metaText, isLive && { color: colors.volt }]}>
             {isLive && metaLeft ? `● ${metaLeft}` : metaLeft}
           </Text>
