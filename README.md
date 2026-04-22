@@ -36,9 +36,13 @@ Scores. Stats. Standings. Showdowns. All under one roof, all in one repo, all wi
 ```sh
 cd frontend
 yarn install
-yarn web           # dev server with hot reload
-yarn build         # static export to frontend/dist/
+yarn web               # dev server with hot reload
+yarn build             # static export to frontend/dist/
+yarn storybook         # design-system Storybook on :6006
+yarn build-storybook   # static Storybook to storybook-static/
 ```
+
+The design system lives at `frontend/src/design-system/` — tokens + Button, Chip, Card, Input, Scoreboard, TabBar, each with stories that mirror the JP Sports design bundle.
 
 ### Smoke-test the container locally
 

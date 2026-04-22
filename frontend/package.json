@@ -7,7 +7,11 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "build": "expo export --platform web"
+    "build": "expo export --platform web",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "test-storybook": "test-storybook",
+    "test-storybook:ci": "concurrently -k -s first -n SB,TEST -c magenta,blue \"http-server storybook-static --port 6006 --silent\" \"wait-on tcp:127.0.0.1:6006 && test-storybook --url http://127.0.0.1:6006\""
   },
   "dependencies": {
     "@expo/metro-runtime": "~6.1.2",
@@ -16,11 +20,22 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-native": "0.81.5",
+    "react-native-svg": "15.12.1",
     "react-native-web": "^0.21.2"
   },
   "devDependencies": {
+    "@storybook/addon-essentials": "^8.4",
+    "@storybook/react-vite": "^8.4",
+    "@storybook/test": "^8.6.15",
+    "@storybook/test-runner": "^0.24.3",
     "@types/react": "~19.1.0",
-    "typescript": "~5.9.2"
+    "@vitejs/plugin-react": "^4.3",
+    "concurrently": "^9.2.1",
+    "http-server": "^14.1.1",
+    "storybook": "^8.4",
+    "typescript": "~5.9.2",
+    "vite": "^5.4",
+    "wait-on": "^9.0.5"
   },
   "private": true
 }
