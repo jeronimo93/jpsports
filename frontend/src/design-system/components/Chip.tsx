@@ -1,6 +1,10 @@
 import React, { useEffect, useRef } from 'react';
-import { Animated, StyleSheet, Text, View, type ViewStyle } from 'react-native';
+import { Animated, Platform, StyleSheet, Text, View, type ViewStyle } from 'react-native';
 import { colors, fonts, radii, tracking } from '../tokens';
+
+// RN-Web silently ignores useNativeDriver. Enable it on native where it
+// actually moves the animation off the JS thread; disable explicitly on web.
+const USE_NATIVE_DRIVER = Platform.OS !== 'web';
 
 export type ChipVariant = 'default' | 'live' | 'hot' | 'ice' | 'win' | 'loss' | 'ghost';
 
@@ -25,8 +29,8 @@ function PulsingDot({ color }: { color: string }) {
   useEffect(() => {
     const loop = Animated.loop(
       Animated.sequence([
-        Animated.timing(opacity, { toValue: 0.35, duration: 1000, useNativeDriver: true }),
-        Animated.timing(opacity, { toValue: 1, duration: 1000, useNativeDriver: true }),
+        Animated.timing(opacity, { toValue: 0.35, duration: 1000, useNativeDriver: USE_NATIVE_DRIVER }),
+        Animated.timing(opacity, { toValue: 1, duration: 1000, useNativeDriver: USE_NATIVE_DRIVER }),
       ]),
     );
     loop.start();
