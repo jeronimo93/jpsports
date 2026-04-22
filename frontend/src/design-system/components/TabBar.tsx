@@ -3,6 +3,9 @@ import { Pressable, StyleSheet, Text, View, type ViewStyle } from 'react-native'
 import Svg, { Circle, Path, Rect, G } from 'react-native-svg';
 import { colors, fonts, tracking } from '../tokens';
 
+// TabBar labels are 10px — applying `tracking.caps` (0.08) gives the
+// same visual tightness as other uppercase chrome in the system.
+
 export type TabId = 'feed' | 'scores' | 'clips' | 'squad' | 'me';
 
 export type Tab = {
@@ -40,7 +43,7 @@ export function TabBar({ active, onChange, tabs = DEFAULT_TABS, style }: TabBarP
                 fontFamily: fonts.body,
                 fontWeight: '700',
                 fontSize: 10,
-                letterSpacing: 10 * 0.06,
+                letterSpacing: 10 * tracking.caps,
                 textTransform: 'uppercase',
               }}
             >
