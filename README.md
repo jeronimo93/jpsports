@@ -5,9 +5,11 @@
 [![latest backend](https://img.shields.io/github/v/tag/jeronimo93/jpsports?filter=backend-v*&label=backend&color=blue)](https://github.com/jeronimo93/jpsports/tags)
 
 [![frontend CI](https://github.com/jeronimo93/jpsports/actions/workflows/frontend.yml/badge.svg)](https://github.com/jeronimo93/jpsports/actions/workflows/frontend.yml)
+[![storybook CI](https://github.com/jeronimo93/jpsports/actions/workflows/storybook.yml/badge.svg)](https://github.com/jeronimo93/jpsports/actions/workflows/storybook.yml)
 [![frontend live](https://img.shields.io/website?url=https%3A%2F%2Fjpsports-frontend-x2tq7.ondigitalocean.app%2Fhealthz&label=frontend%20live)](https://jpsports-frontend-x2tq7.ondigitalocean.app)
 [![Expo 54](https://img.shields.io/badge/Expo-54-000020?logo=expo&logoColor=white)](https://expo.dev/)
 [![React Native Web](https://img.shields.io/badge/React_Native_Web-0.21-61DAFB?logo=react&logoColor=black)](https://necolas.github.io/react-native-web/)
+[![Storybook 8](https://img.shields.io/badge/Storybook-8-FF4785?logo=storybook&logoColor=white)](https://storybook.js.org/)
 [![latest frontend](https://img.shields.io/github/v/tag/jeronimo93/jpsports?filter=frontend-v*&label=frontend&color=orange)](https://github.com/jeronimo93/jpsports/tags)
 
 [![last commit](https://img.shields.io/github/last-commit/jeronimo93/jpsports)](https://github.com/jeronimo93/jpsports/commits/main)
