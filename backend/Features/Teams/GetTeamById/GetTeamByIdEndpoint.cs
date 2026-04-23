@@ -1,4 +1,5 @@
 using JPSportsApi.Common;
+using JPSportsApi.Features.Teams;
 
 namespace JPSportsApi.Features.Teams.GetTeamById;
 
@@ -31,5 +32,3 @@ public static class GetTeamByIdEndpoint
         return Result<TeamResponse>.Success(new TeamResponse(1, "Team A", "City A"));
     }
 }
-
-public record TeamResponse(int Id, string Name, string City);
