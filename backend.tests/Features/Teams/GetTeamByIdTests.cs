@@ -1,4 +1,5 @@
 using FluentAssertions;
+using JPSportsApi.Features.Teams;
 using JPSportsApi.Features.Teams.GetTeamById;
 using Xunit;
 
