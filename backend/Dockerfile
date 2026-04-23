@@ -1,14 +1,15 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
-COPY Backend.csproj ./
-RUN dotnet restore
+COPY JPSports.Api.csproj packages.lock.json ./
+RUN dotnet restore --locked-mode
 COPY . ./
-RUN dotnet publish Backend.csproj -c Release -o /app /p:UseAppHost=false
+RUN dotnet publish JPSports.Api.csproj -c Release -o /app /p:UseAppHost=false
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0
 WORKDIR /app
 COPY --from=build /app ./
 ENV ASPNETCORE_URLS=http://+:8080
 EXPOSE 8080
+ARG APP_UID=1654
 USER $APP_UID
-ENTRYPOINT ["dotnet", "Backend.dll"]
+ENTRYPOINT ["dotnet", "JPSports.Api.dll"]

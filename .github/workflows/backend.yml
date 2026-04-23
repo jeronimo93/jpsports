@@ -2,12 +2,13 @@ name: backend
 
 on:
   # NOTE: `paths` applies to tag events too. The release flow must bump
-  # <Version> in backend/Backend.csproj so the tagged commit touches
+  # <Version> in backend/JPSports.Api.csproj so the tagged commit touches
   # backend/** — otherwise the tag push is silently filtered out.
   push:
     branches: [main]
     paths:
       - 'backend/**'
+      - 'backend.tests/**'
       - '.github/workflows/backend.yml'
     tags: ['backend-v[0-9]*']
   workflow_dispatch:
@@ -16,12 +17,31 @@ env:
   IMAGE: registry.digitalocean.com/princeyscr/backend
 
 jobs:
-  build-and-push:
-    runs-on: ubuntu-latest
+  test:
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
-      - uses: digitalocean/action-doctl@v2
+      - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ hashFiles('backend/packages.lock.json') }}
+          restore-keys: nuget-${{ runner.os }}-
+
+      - name: Test
+        run: dotnet test backend.tests/JPSports.Api.Tests.csproj --configuration Release
+
+  build-and-push:
+    needs: test
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+
+      - uses: digitalocean/action-doctl@3cb3953159719656269e044e0e24ca16dd2a690f # v2
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
@@ -31,19 +51,27 @@ jobs:
       - name: Compute tags
         id: tags
         run: |
-          if [[ "$GITHUB_REF" == refs/tags/backend-v* ]]; then
-            V="${GITHUB_REF#refs/tags/backend-v}"
-            echo "tags=$IMAGE:$V,$IMAGE:latest" >>"$GITHUB_OUTPUT"
-          else
-            echo "tags=$IMAGE:latest,$IMAGE:sha-${GITHUB_SHA::7}" >>"$GITHUB_OUTPUT"
-          fi
+          {
+            echo 'tags<<EOF'
+            if [[ "$GITHUB_REF" == refs/tags/backend-v* ]]; then
+              V="${GITHUB_REF#refs/tags/backend-v}"
+              echo "$IMAGE:$V"
+              echo "$IMAGE:latest"
+            else
+              echo "$IMAGE:latest"
+              echo "$IMAGE:sha-${GITHUB_SHA::7}"
+            fi
+            echo 'EOF'
+          } >>"$GITHUB_OUTPUT"
+
+      - uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3
 
       - name: Build and push
-        env:
-          TAGS: ${{ steps.tags.outputs.tags }}
-        run: |
-          IFS=',' read -ra T <<< "$TAGS"
-          ARGS=()
-          for t in "${T[@]}"; do ARGS+=(-t "$t"); done
-          docker build "${ARGS[@]}" -f backend/Dockerfile backend
-          for t in "${T[@]}"; do docker push "$t"; done
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          push: true
+          tags: ${{ steps.tags.outputs.tags }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

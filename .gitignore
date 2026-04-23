@@ -1,0 +1,38 @@
+# ── .NET ────────────────────────────────────────────────────────────────────
+bin/
+obj/
+*.user
+.vs/
+
+# ── Node / Expo ──────────────────────────────────────────────────────────────
+node_modules/
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+storybook-static/
+*.tsbuildinfo
+
+# ── React Native ─────────────────────────────────────────────────────────────
+.kotlin/
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+.metro-health-check*
+/frontend/ios
+/frontend/android
+
+# ── Logs ─────────────────────────────────────────────────────────────────────
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# ── Secrets / env ────────────────────────────────────────────────────────────
+.env*.local
+*.pem
+
+# ── OS ───────────────────────────────────────────────────────────────────────
+.DS_Store

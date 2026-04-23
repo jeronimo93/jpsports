@@ -9,6 +9,11 @@
          (StringComparison.CurrentCulture, locale-aware DateTime parsing)
          behave invariantly. Revisit if we ever need localisation. -->
     <InvariantGlobalization>true</InvariantGlobalization>
+    <!-- Enables AOT compatibility analyzer warnings without requiring a full AOT publish. -->
+    <IsAotCompatible>true</IsAotCompatible>
+    <!-- Source-generates AOT-safe request delegates for minimal API endpoints, resolving IL3050. -->
+    <EnableRequestDelegateGenerator>true</EnableRequestDelegateGenerator>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
 </Project>
