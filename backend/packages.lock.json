@@ -11,15 +11,6 @@
           "Asp.Versioning.Abstractions": "10.0.0"
         }
       },
-      "Asp.Versioning.Mvc.ApiExplorer": {
-        "type": "Direct",
-        "requested": "[10.0.0, )",
-        "resolved": "10.0.0",
-        "contentHash": "H54UOpRoc4RmhQ4RA2lzDz43a/hAu/JN19Yyy/DNmH4XlRxhemfhifJyh9BaXNJOtGa2Dnu2xEeP4VSiTdUdAg==",
-        "dependencies": {
-          "Asp.Versioning.Mvc": "10.0.0"
-        }
-      },
       "Microsoft.NET.ILLink.Tasks": {
         "type": "Direct",
         "requested": "[10.0.5, )",
@@ -30,14 +21,6 @@
         "type": "Transitive",
         "resolved": "10.0.0",
         "contentHash": "cMRE5nvNMfBgfkb0XFWst/7UtyXCjoAXnV0L4Scx4P9fcf0idgrj1Z0c+3ylsy01K4cOib7dKhCBfpg5z3r0Kg=="
-      },
-      "Asp.Versioning.Mvc": {
-        "type": "Transitive",
-        "resolved": "10.0.0",
-        "contentHash": "W0wZ+0uZ0UK4KstjvEkNBZ0xxhBmxunwNg8582SVyyW7txQmSXibtm8fC4o82LaemPquYskms67bIbJOSrnlug==",
-        "dependencies": {
-          "Asp.Versioning.Http": "10.0.0"
-        }
       }
     }
   }
