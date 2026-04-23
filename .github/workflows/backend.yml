@@ -2,12 +2,13 @@ name: backend
 
 on:
   # NOTE: `paths` applies to tag events too. The release flow must bump
-  # <Version> in backend/Backend.csproj so the tagged commit touches
+  # <Version> in backend/JPSports.Api.csproj so the tagged commit touches
   # backend/** — otherwise the tag push is silently filtered out.
   push:
     branches: [main]
     paths:
       - 'backend/**'
+      - 'backend.tests/**'
       - '.github/workflows/backend.yml'
     tags: ['backend-v[0-9]*']
   workflow_dispatch:
@@ -16,8 +17,21 @@ env:
   IMAGE: registry.digitalocean.com/princeyscr/backend
 
 jobs:
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Test
+        run: dotnet test backend.tests/JPSports.Api.Tests.csproj --configuration Release
+
   build-and-push:
-    runs-on: ubuntu-latest
+    needs: test
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
 

@@ -1,9 +1,9 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
-COPY Backend.csproj ./
+COPY JPSports.Api.csproj ./
 RUN dotnet restore
 COPY . ./
-RUN dotnet publish Backend.csproj -c Release -o /app /p:UseAppHost=false
+RUN dotnet publish JPSports.Api.csproj -c Release -o /app /p:UseAppHost=false
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0
 WORKDIR /app
@@ -11,4 +11,4 @@ COPY --from=build /app ./
 ENV ASPNETCORE_URLS=http://+:8080
 EXPOSE 8080
 USER $APP_UID
-ENTRYPOINT ["dotnet", "Backend.dll"]
+ENTRYPOINT ["dotnet", "JPSports.Api.dll"]
