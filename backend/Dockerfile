@@ -1,7 +1,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
-COPY JPSports.Api.csproj ./
-RUN dotnet restore
+COPY JPSports.Api.csproj packages.lock.json ./
+RUN dotnet restore --locked-mode
 COPY . ./
 RUN dotnet publish JPSports.Api.csproj -c Release -o /app /p:UseAppHost=false
 
