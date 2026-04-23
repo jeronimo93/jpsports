@@ -1,5 +1,5 @@
 using Asp.Versioning;
-using JPSportsApi.Features.Teams.GetTeamById;
+using JPSportsApi.Features.Teams;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,8 +11,7 @@ builder.Services.AddApiVersioning(options =>
 
 var app = builder.Build();
 
-// Register services and endpoints
-app.MapGetTeamByIdEndpoint();
+app.MapTeamsEndpoints();
 
 app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
 
