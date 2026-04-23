@@ -1,4 +1,4 @@
-name: jpsports-frontend
+name: jpsports
 region: ams
 services:
   - name: web
