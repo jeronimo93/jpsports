@@ -46,7 +46,7 @@ if (app.Environment.IsDevelopment())
 
 app.MapTeamsEndpoints();
 
-app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
+app.MapGet("/health", () => Results.Ok());
 
 app.Run();
 
