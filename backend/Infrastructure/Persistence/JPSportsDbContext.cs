@@ -4,11 +4,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace JPSportsApi.Infrastructure.Persistence;
 
-// IL2026/IL3050: DbContext base constructor is annotated as not AOT-safe in the general case.
-// Safe here because we use a compiled model (dotnet ef dbcontext optimize) which bypasses
-// all reflection-based model building at runtime.
-[SuppressMessage("Trimming", "IL2026")]
-[SuppressMessage("AOT", "IL3050")]
+// [UnconditionalSuppressMessage] (not [SuppressMessage]) is required here because these are
+// ILC/trimmer warnings, not Roslyn analyser warnings. The suppression is safe because we use
+// a compiled model (dotnet ef dbcontext optimize) which bypasses all reflection-based model
+// building at runtime — the only source of AOT unsafety in DbContext.
+[UnconditionalSuppressMessage("Trimming", "IL2026")]
+[UnconditionalSuppressMessage("AOT", "IL3050")]
 public class JPSportsDbContext(DbContextOptions<JPSportsDbContext> options)
     : DbContext(options)
 {

@@ -16,6 +16,11 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <EntityFrameworkNativeCompilation>true</EntityFrameworkNativeCompilation>
     <PublishAot>true</PublishAot>
+    <!-- EF Core's own assemblies carry residual IL2104/IL3053 assembly-level warnings and
+         SpatialiteLoader triggers IL3002 via DependencyContext.Default — none reachable at
+         runtime when using a compiled model. Suppress at the ILC level since these originate
+         inside NuGet packages and cannot be fixed with [UnconditionalSuppressMessage]. -->
+    <IlcSuppressWarnings>IL2104;IL3053;IL3002</IlcSuppressWarnings>
   </PropertyGroup>
 
   <ItemGroup>
