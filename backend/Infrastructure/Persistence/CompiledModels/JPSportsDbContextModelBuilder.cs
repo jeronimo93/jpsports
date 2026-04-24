@@ -11,7 +11,7 @@ namespace JPSportsApi.Infrastructure.Persistence.CompiledModels
     public partial class JPSportsDbContextModel
     {
         private JPSportsDbContextModel()
-            : base(skipDetectChanges: false, modelId: new Guid("c9c68b3d-0f91-4836-9aaf-81f1bd48ce82"), entityTypeCount: 1)
+            : base(skipDetectChanges: false, modelId: new Guid("6f2e5999-6024-4c5f-8734-329b46d154c1"), entityTypeCount: 1)
         {
         }
 

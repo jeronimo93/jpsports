@@ -7,8 +7,13 @@ public static class TeamsEndpoints
 {
     public static IEndpointRouteBuilder MapTeamsEndpoints(this IEndpointRouteBuilder app)
     {
-        var v1 = app.MapGroup("v1/teams").WithTags("Teams");
-        v1.HasApiVersion(new ApiVersion(1, 0));
+        var versions = app.NewApiVersionSet()
+            .HasApiVersion(new ApiVersion(1, 0))
+            .Build();
+
+        var v1 = app.MapGroup("teams")
+            .WithTags("Teams")
+            .WithApiVersionSet(versions);
 
         GetTeamByIdEndpoint.Map(v1);
 

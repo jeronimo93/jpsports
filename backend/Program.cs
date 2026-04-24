@@ -23,11 +23,26 @@ builder.Services.AddDbContext<JPSportsDbContext>(options =>
 
 builder.Services.AddApiVersioning(options =>
 {
-    options.ApiVersionReader = new UrlSegmentApiVersionReader();
+    options.ApiVersionReader = ApiVersionReader.Combine(
+        new QueryStringApiVersionReader("api-version"),
+        new HeaderApiVersionReader("api-version")
+    );
     options.DefaultApiVersion = new ApiVersion(1, 0);
+    options.AssumeDefaultVersionWhenUnspecified = true;
+});
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("DevCors", policy =>
+        policy.WithOrigins("http://localhost:8081")
+              .AllowAnyMethod()
+              .AllowAnyHeader());
 });
 
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+    app.UseCors("DevCors");
 
 app.MapTeamsEndpoints();
 
