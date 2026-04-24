@@ -32,6 +32,17 @@ jobs:
           key: nuget-${{ runner.os }}-${{ hashFiles('backend/packages.lock.json') }}
           restore-keys: nuget-${{ runner.os }}-
 
+      - name: Restore tools
+        run: dotnet tool restore
+
+      - name: Check compiled model is up to date
+        run: |
+          dotnet tool run dotnet-ef dbcontext optimize \
+            --project backend/JPSports.Api.csproj \
+            --output-dir Infrastructure/Persistence/CompiledModels \
+            --namespace JPSportsApi.Infrastructure.Persistence.CompiledModels
+          git diff --exit-code backend/Infrastructure/Persistence/CompiledModels/
+
       - name: Test
         run: dotnet test backend.tests/JPSports.Api.Tests.csproj --configuration Release
 
