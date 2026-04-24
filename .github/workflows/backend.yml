@@ -49,7 +49,13 @@ jobs:
             --project backend/JPSports.Api.csproj \
             --output-dir Infrastructure/Persistence/CompiledModels \
             --namespace JPSportsApi.Infrastructure.Persistence.CompiledModels
-          git diff --exit-code backend/Infrastructure/Persistence/CompiledModels/
+          # modelId GUID is regenerated non-deterministically across platforms;
+          # exclude it so macOS dev machines and Linux CI produce the same result.
+          git diff backend/Infrastructure/Persistence/CompiledModels/ \
+            | grep -v 'modelId: new Guid' \
+            | grep -q '^[+-][^+-]' \
+            && { echo "Compiled model is out of date — run dotnet ef dbcontext optimize and commit the result."; exit 1; } \
+            || true
 
       - name: Test
         run: dotnet test backend.tests/JPSports.Api.Tests.csproj --configuration Release
