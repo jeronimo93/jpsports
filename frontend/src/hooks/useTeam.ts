@@ -11,20 +11,19 @@ export function useTeam(id: number): TeamState {
   const [state, setState] = useState<TeamState>({ status: 'loading' });
 
   useEffect(() => {
-    let cancelled = false;
+    const controller = new AbortController();
     setState({ status: 'loading' });
-    getTeamById(id)
+    getTeamById(id, controller.signal)
       .then((team) => {
-        if (!cancelled) setState({ status: 'success', team });
+        setState({ status: 'success', team });
       })
       .catch((err: unknown) => {
-        if (!cancelled) {
-          const error = err instanceof Error ? err.message : 'Unknown error';
-          setState({ status: 'error', error });
-        }
+        if (controller.signal.aborted) return;
+        const error = err instanceof Error ? err.message : 'Unknown error';
+        setState({ status: 'error', error });
       });
     return () => {
-      cancelled = true;
+      controller.abort();
     };
   }, [id]);
 

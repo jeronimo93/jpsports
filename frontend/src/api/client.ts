@@ -14,12 +14,14 @@ const API_VERSION = '1.0';
 export async function apiFetch<T>(
   path: string,
   parse?: (raw: unknown) => T,
+  signal?: AbortSignal,
 ): Promise<T> {
   let response: Response;
   try {
     const base = process.env.EXPO_PUBLIC_API_BASE_URL ?? '/api';
     response = await fetch(`${base}${path}`, {
       headers: { 'api-version': API_VERSION },
+      signal,
     });
   } catch (cause) {
     throw new ApiError(0, 'Network error', { cause });
