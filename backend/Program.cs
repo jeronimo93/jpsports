@@ -1,11 +1,12 @@
 using System.Text.Json.Serialization;
 using Asp.Versioning;
+using Features.Teams.CreateTeam;
 using JPSportsApi.Features.Teams;
 using JPSportsApi.Infrastructure.Persistence;
 using JPSportsApi.Infrastructure.Persistence.CompiledModels;
 using Microsoft.EntityFrameworkCore;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateSlimBuilder(args);
 
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
@@ -51,5 +52,6 @@ app.MapGet("/health", () => Results.Ok());
 app.Run();
 
 [JsonSerializable(typeof(TeamResponse))]
+[JsonSerializable(typeof(CreateTeamModel))]
 [JsonSerializable(typeof(List<TeamResponse>))]
 public partial class AppJsonContext : JsonSerializerContext { }

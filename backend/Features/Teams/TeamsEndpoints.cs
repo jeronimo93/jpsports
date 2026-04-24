@@ -1,4 +1,5 @@
 using Asp.Versioning;
+using JPSportsApi.Features.Teams.CreateTeam;
 using JPSportsApi.Features.Teams.GetTeamById;
 
 namespace JPSportsApi.Features.Teams;
@@ -16,6 +17,7 @@ public static class TeamsEndpoints
             .WithApiVersionSet(versions);
 
         GetTeamByIdEndpoint.Map(v1);
+        CreateTeamEndpoint.Map(v1);
 
         return app;
     }
