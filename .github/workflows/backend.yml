@@ -37,6 +37,9 @@ jobs:
           path: ~/.dotnet/tools
           key: dotnet-tools-${{ hashFiles('dotnet-tools.json') }}
 
+      - name: Restore NuGet packages
+        run: dotnet restore backend/JPSports.Api.csproj
+
       - name: Restore tools
         run: dotnet tool restore
 
