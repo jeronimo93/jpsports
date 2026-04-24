@@ -3,7 +3,6 @@ using Asp.Versioning;
 using JPSportsApi.Features.Teams;
 using JPSportsApi.Infrastructure.Persistence;
 using JPSportsApi.Infrastructure.Persistence.CompiledModels;
-using JPSportsApi.Infrastructure.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

@@ -14,6 +14,7 @@ public class JPSportsDbContext(DbContextOptions<JPSportsDbContext> options)
 {
     public DbSet<Team> Teams => Set<Team>();
 
+    // Only used by `dotnet ef migrations` — bypassed at runtime when UseModel() is called.
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
